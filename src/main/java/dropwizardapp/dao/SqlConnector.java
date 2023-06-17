@@ -9,25 +9,31 @@ import java.sql.*;
 import java.util.List;
 
 public class SqlConnector implements DbInterface{
+    String url = "jdbc:mysql://localhost:3306/city_info";
+    String username = "root";
+    String password = "";
+    Connection connection;
+
+    public SqlConnector() {
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Database connected!");
+
+        } catch (SQLException e) {
+//            throw new IllegalStateException("Cannot connect the database!", e);
+            System.out.println(e);
+        }
+    }
     @Override
     public City fetchCityById(int id) throws IOException {
-        String url = "jdbc:mysql://localhost:3306/city_info";
-        String username = "root";
-        String password = "";
-
-        System.out.println("Connecting database...");
-        List<City> cities;
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Database connected!");
-            Statement stmt = connection.createStatement();
+        List<City> cities = null;
+        try (Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery("select * from cities");
-
             ResultSetHandler<List<City>> resultSetHandler = new BeanListHandler<City>(City.class);
             cities = resultSetHandler.handle(rs);
-//            while(rs.next())
-//                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+//            throw new IllegalStateException("Cannot connect the database!", e);
+            System.out.println(e);
         }
 
         if(id > cities.size() || id < 1) {
