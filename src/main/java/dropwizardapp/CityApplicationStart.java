@@ -26,6 +26,6 @@ public class CityApplicationStart extends Application<CityConfiguration> {//is t
         CityResource resource = new CityResource(
                 configuration.getDefaultId()
         );
-        environment.jersey().register(new CityResource(configuration.getDefaultId()));
+        environment.jersey().register(resource);
     }
 }

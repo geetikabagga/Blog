@@ -1,15 +1,13 @@
 package dropwizardapp.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import dropwizardapp.api.CityRequest;
+import dropwizardapp.api.CityResponse;
 import dropwizardapp.dao.DbInterface;
 import dropwizardapp.dao.SqlConnector;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -22,7 +20,6 @@ public class CityResource {
 
     public CityResource(int defaultId) {
         this.defaultId = defaultId;
-//        dataConnector = new YamlConnector();
         dataConnector = new SqlConnector();
     }
 
@@ -30,20 +27,22 @@ public class CityResource {
     @Timed
     @GET
     public Response getCity(@QueryParam("id") Optional<Integer> id) throws IOException {
-        dropwizardapp.dao.models.City city = dataConnector.fetchCityById(id.orElse(defaultId));
-        if(city == null) {
+        dropwizardapp.dao.models.City city1 = dataConnector.fetchCityById(id.orElse(defaultId));
+        //yet to map  city to the city api class
+//        CityResponse cityResponse = new CityResponse(city1.getId(), city1.getName(), city1.getDescription());
+        if(city1 == null) {
             Response response = Response.status(Response.Status.PARTIAL_CONTENT).entity("no city found").build();
             throw new WebApplicationException(response);
         }
-        return Response.status(Response.Status.OK).entity(city).build();//does the code come here for an invalid id?
+        CityResponse cityResponse = new CityResponse(city1.getId(), city1.getName(), city1.getDescription());
+        return Response.status(Response.Status.OK).entity(cityResponse).build();
     }
 
-    @AllArgsConstructor
-    @Data
-    @NoArgsConstructor
-    public class BlahResponse {
-
-        @JsonProperty
-        private String message;
+    @Path("/add-city")
+    @Timed
+    @POST
+    public Response addCity(CityRequest cityRequest) {
+        dataConnector.addCity(cityRequest);
+        return Response.status(Response.Status.OK).build();
     }
 }

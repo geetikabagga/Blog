@@ -1,5 +1,6 @@
 package dropwizardapp.dao;
 
+import dropwizardapp.api.CityRequest;
 import dropwizardapp.dao.models.City;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -41,4 +42,14 @@ public class SqlConnector implements DbInterface{
         }
         return cities.get(id-1);
     }
+
+    @Override
+    public void addCity(CityRequest cityRequest) {
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate("INSERT INTO cities(name, description)" + "VALUES ('"+ cityRequest.getName() +"', '"+ cityRequest.getDescription() +"')");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
 }

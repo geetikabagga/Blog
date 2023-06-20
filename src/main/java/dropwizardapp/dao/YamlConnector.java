@@ -2,6 +2,7 @@ package dropwizardapp.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import dropwizardapp.api.CityRequest;
 import dropwizardapp.dao.models.City;
 
 import java.io.IOException;
@@ -29,5 +30,10 @@ public class YamlConnector implements DbInterface {
             return null;
         }
         else return cities[id-1];
+    }
+
+    @Override
+    public void addCity(CityRequest cityRequest) {
+
     }
 }

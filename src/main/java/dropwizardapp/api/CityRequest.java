@@ -10,15 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class City {
-
-    @JsonProperty
-    private Long id;
+public class CityRequest {
     @JsonProperty
     private String name;
     @JsonProperty
     private String description;
-
-
-
 }
