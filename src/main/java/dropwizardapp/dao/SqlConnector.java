@@ -52,4 +52,17 @@ public class SqlConnector implements DbInterface{
         }
     }
 
+    @Override
+    public List<City> listCities(Integer bookmarkId) {
+        List<City> cities = null;
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery("select * from cities where id > '" + bookmarkId + "' limit 5");
+            ResultSetHandler<List<City>> resultSetHandler = new BeanListHandler<City>(City.class);
+            cities = resultSetHandler.handle(rs);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return cities;
+    }
+
 }

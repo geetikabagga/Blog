@@ -8,6 +8,7 @@ import dropwizardapp.dao.models.City;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 public class YamlConnector implements DbInterface {
     @Override
@@ -35,5 +36,10 @@ public class YamlConnector implements DbInterface {
     @Override
     public void addCity(CityRequest cityRequest) {
 
+    }
+
+    @Override
+    public List<City> listCities(Integer bookmarkId) {
+        return null;
     }
 }

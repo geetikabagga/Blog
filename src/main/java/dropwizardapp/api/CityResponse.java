@@ -19,6 +19,4 @@ public class CityResponse {
     @JsonProperty
     private String description;
 
-
-
 }
